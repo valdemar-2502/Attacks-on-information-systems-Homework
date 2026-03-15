@@ -39,22 +39,67 @@
 
 - Какие сетевые службы в ней разрешены?
 ```
-nmap -sv -O 192.168.0.11
+nmap -sv -O 192.168.88.35
 ```
-977 портов закрыты - 23 открыты
-
-**Службы** - ftp, ssh, telnet, smtp, domain, http, rpcbind, netbios-ssn, exec, login, tcpwrapped, java-rmi, bindshell, nfs, ftp, mysql, postgresql, vnc, X11, irc, ajp13, http
-
+### Ответ для Задания 1:
+1. Какие сетевые службы разрешены в Metasploitable?
+В результате сканирования IP-адреса 192.168.88.35 с помощью команды nmap -sV были обнаружены следующие активные сетевые службы:
+```
+Порт	Служба	Версия / Уточнение
+21/tcp	FTP	vsftpd 2.3.4
+22/tcp	SSH	OpenSSH 4.7p1 Debian 8ubuntu1
+23/tcp	Telnet	Linux telnetd
+25/tcp	SMTP	Postfix smtpd
+53/tcp	DNS	ISC BIND 9.4.2
+80/tcp	HTTP	Apache httpd 2.2.8 (Ubuntu)
+111/tcp	RPC	rpcbind 2
+139/tcp	NetBIOS-SSN	Samba smbd 3.X - 4.X
+445/tcp	NetBIOS-SSN	Samba smbd 3.X - 4.X
+512/tcp	exec	netkit-rsh rexecd
+513/tcp	login	rlogind
+514/tcp	tcpwrapped	(обычно rsh)
+1099/tcp	Java RMI	GNU Classpath grmiregistry
+1524/tcp	bindshell	Metasploitable root shell (известный бэкдор)
+2049/tcp	NFS	Network File System (2-4)
+2121/tcp	FTP	ProFTPD 1.3.1
+3306/tcp	MySQL	MySQL 5.0.51a-3ubuntu5
+5432/tcp	PostgreSQL	PostgreSQL DB 8.3.0 - 8.3.7
+5900/tcp	VNC	VNC (protocol 3.3)
+6000/tcp	X11	X Window System
+6667/tcp	IRC	UnrealIRCd
+8009/tcp	AJP13	Apache Jserv (Protocol v1.3)
+8180/tcp	HTTP	Apache Tomcat/Coyote JSP engine 1.1
+```
+---
 ![1.png](https://github.com/joos-net/attacks-on-is/blob/main/1.png)
-  
-- Какие уязвимости были вами обнаружены? (список со ссылками: достаточно трёх уязвимостей)
-```
-https://www.exploit-db.com/exploits/17491
-https://www.exploit-db.com/exploits/6122
-https://www.exploit-db.com/exploits/30020
-https://www.exploit-db.com/exploits/27407
-https://www.exploit-db.com/exploits/31965
-```
+ 
+`
+#### 2. Какие уязвимости были вами обнаружены? (список со ссылками)
+Используя полученные данные о версиях служб и сайт Exploit-DB, можно выделить следующие критические уязвимости (привожу три самых известных):
+
+vsftpd 2.3.4 (Backdoor Command Execution)
+
+Описание: В данной версии FTP-сервера присутствует бэкдор. Если в имени пользователя при подключении ввести символы :), на порту 6200 открывается командная оболочка с правами root.
+
+Ссылка на Exploit-DB: https://www.exploit-db.com/exploits/17491
+
+Почему это опасно: Злоумышленник получает полный контроль над сервером без необходимости ввода пароля.
+
+UnrealIRCd 3.2.8.1 (Backdoor Command Execution)
+
+Описание: В дистрибутиве IRC-сервера был намеренно оставлен бэкдор, позволяющий любому клиенту, отправившему специальную команду (начинающуюся с AB), выполнить произвольную системную команду.
+
+Ссылка на Exploit-DB: https://www.exploit-db.com/exploits/13853
+
+Почему это опасно: Удаленное выполнение кода на сервере.
+
+Samba 3.X (CVE-2007-2447 - Usermap Script RCE)
+
+Описание: Уязвимость в Samba (версии 3.0.20 - 3.0.25c) позволяет удаленно выполнить команды с правами root через передачу специально сформированных данных в функцию сопоставления имен пользователей (map username).
+
+Ссылка на Exploit-DB: https://www.exploit-db.com/exploits/16320
+
+Почему это опасно: Позволяет атакующему получить root-доступ к системе через стандартный сетевой порт.
 
 ### Задание 2
 
