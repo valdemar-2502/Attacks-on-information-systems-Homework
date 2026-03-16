@@ -39,7 +39,7 @@
 
 - Какие сетевые службы в ней разрешены?
 ```
-nmap -sv -O 192.168.88.35
+nmap -sV -O 192.168.88.35
 ```
 ### Ответ для Задания 1:
 1. Какие сетевые службы разрешены в Metasploitable?
@@ -71,7 +71,7 @@ nmap -sv -O 192.168.88.35
 8180/tcp	HTTP	Apache Tomcat/Coyote JSP engine 1.1
 ```
 ---
-![1.png](https://github.com/joos-net/attacks-on-is/blob/main/1.png)
+![task1](https://github.com/valdemar-2502/Attacks-on-information-systems-Homework/blob/main/Screenshots/task1-scanning_nmap.png)
  
 `
 #### 2. Какие уязвимости были вами обнаружены? (список со ссылками)
@@ -117,25 +117,24 @@ Samba 3.X (CVE-2007-2447 - Usermap Script RCE)
 nmap -sS <ip> - TCP SYN сканирование. SYN это используемый по умолчанию и наиболее популярный тип сканирования. 
 ```
 
-![SYN.png](https://github.com/joos-net/attacks-on-is/blob/main/SYN.png)
+![task2](https://github.com/valdemar-2502/Attacks-on-information-systems-Homework/blob/main/Screenshots/task2-ss.png)
 
 **FIN** - Nmap посылает FIN-пакет, в TCP заголовок ставится флаг FIN. Согласно RFC 793, на прибывший FIN-пакет на закрытый порт сервер должен ответить пакетом RST. FIN-пакеты на открытые порты должны игнорироваться сервером. По этому различию становится возможным отличить закрытый порт от открытого. 
 ```
 nmap -sF <ip> - FIN сканирование. Устанавливается только TCP FIN бит.
 ```
 
-![FIN.png](https://github.com/joos-net/attacks-on-is/blob/main/FIN1.png)
+![task2](https://github.com/valdemar-2502/Attacks-on-information-systems-Homework/blob/main/Screenshots/task2-sf.png)
 
 **Xmas** - Устанавливаются FIN, PSH и URG флаги. Если в результате FIN-сканирования мы получили список открытых портов, то это не Windows. Если же все эти методы выдали результат, что все порты закрыты, а SYN-сканирование обнаружило открытые порты, то мы скорей всего имеете дело с ОС Windows, Cisco, BSDI, IRIX, HP/UX и MVS. Все эти ОС не отправляют RST-пакеты.
 ```
 nmap -sX <ip> - Xmas сканирование. Устанавливаются FIN, PSH и URG флаги.
 ```
 
-![Xmas.png](https://github.com/joos-net/attacks-on-is/blob/main/Xmas.jpg)
+![task2](https://github.com/valdemar-2502/Attacks-on-information-systems-Homework/blob/main/Screenshots/task2-sx.png)
 
 **UDP** - На каждый порт сканируемой машины отправляется UDP-пакет без данных. Этот метод используется для определения, какие UDP-порты на сканируемом хосте являются открытыми.Если в ответ было получено ICMP-сообщение "порт недоступен", это означает, что порт закрыт. В противном случае предполагается, что сканируемый порт открыт.
 ```
-nmap -sU <ip> - Различные типы UDP сканирования. Большой проблемой при UDP сканировании является его медленная скорость работы.
+nmap -sU <ip> --top-ports 20 - Различные типы UDP сканирования. Большой проблемой при UDP сканировании является его медленная скорость работы.
 ```
-
-![UDP.png](https://github.com/joos-net/attacks-on-is/blob/main/udp.png)
+![task2](https://github.com/valdemar-2502/Attacks-on-information-systems-Homework/blob/main/Screenshots/task2-su.png)
